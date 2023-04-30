@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.itfxq.auth.mapper.RoleMapper">
+	<resultMap id="BaseResultMap" type="cn.itfxq.auth.entity.Role">
+		<id column="id" property="id"></id>
+		<result column="name" property="name"></result>
+	</resultMap>
+
+	<select id="queryAll" resultType="Role">
+		select * from t_role
+	</select>
+
+	<select id="listRoleByUserId"
+			resultMap="BaseResultMap">
+		select t_role.*
+		from t_role
+		join t_user_role on t_role.id = t_user_role.roleid
+		where t_user_role.userid = #{userid}
+	</select>
+	<sql id="whereSql">
+	</sql>
+
+	<!--分页-->
+	<select id="queryTotal" parameterType="RoleQuery"
+			resultType="java.lang.Long">
+		select count(*) from t_role
+		<include refid="whereSql"></include>
+	</select>
+
+	<select id="queryData" parameterType="RoleQuery"
+			resultMap="RoleMap">
+		select * from t_role
+		<include refid="whereSql"></include>
+		order by id desc
+		limit #{offset},#{pageSize}
+	</select>
+
+	<resultMap id="RoleMap" type="Role">
+		<id column="id" property="id"></id>
+		<result column="name" property="name"></result>
+		<result column="sn" property="sn"></result>
+		<collection property="permissions" column="id"  select="getPermissionsByRoleId"></collection>
+	</resultMap>
+
+	<select id="getPermissionsByRoleId" resultType="Permission">
+		SELECT
+			p.*
+		FROM
+			t_role_permission rp
+		JOIN t_permission p ON rp.permissionid = p.id
+		WHERE
+			rp.roleid = #{id}
+	</select>
+
+	<!-- 添加角色的权限-->
+	<insert id="addRolePermission" parameterType="java.util.List">
+		insert into t_role_permission(roleid,permissionid)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.roleId},#{item.permissionId})
+		</foreach>
+	</insert>
+
+	<!-- 添加用户的角色-->
+	<insert id="addUserRole" parameterType="java.util.List">
+		insert into t_user_role(userid,roleid)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.userId},#{item.roleId})
+		</foreach>
+	</insert>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+                 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>后台管理系统模板</title>
+
+    <div th:include="~{views/common/include :: cssStyle }"></div>
+</head>
+<body>
+<div class="coder-layout-web">
+    <div class="coder-layout-container">
+        <!--左侧导航-->
+        <div th:include="~{views/common/include :: #asideStyle }"></div>
+        <!--End 左侧导航-->
+        <!--头部信息-->
+        <div th:include="~{views/common/include :: #headerStyle }"></div>
+        <!--End 头部信息-->
+        <!--页面主要内容-->
+        <main class="coder-layout-content"  >
+
+            <div class="container-fluid"
+                 style="background-color:transparent;
+                         padding-top: 0px;
+                         padding-bottom: 0px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <!-- 新增表单start-->
+                            <div class="modal-dialog"
+                                 style="float:left;
+                                     margin-top:0px;
+                                     width: 100%;
+                                     background-color: black;
+                                        color:#ff8f2b;" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" >
+                                            <span style="font-size: 18px;color:#ff8f2b;font-weight: bold">您的位置: 个人信息</span>
+                                        </h4>
+                                    </div>
+                                    <form id="stuEditForm" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <input type="hidden" id="e_id" class="form-control" name="id">
+                                            <div class="form-group">
+                                                <label class="control-label">用户名：</label>
+                                                <input type="text" readonly th:value="${loginUser.username}" class="form-control" name="username">
+                                            </div>
+<!--                                            <div class="form-group">-->
+<!--                                                <label  class="control-label">用户头像:</label>-->
+<!--                                                <div class="clearfix">-->
+<!--                                                    <img height="200px" width="200px" th:src="@{'/showimage/'+${loginUser.headImg}}"></img>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+                                            <!-- 头像上传-->
+                                            <div class="form-group" style="width: 30%">
+                                                <label  class="control-label">头像:</label>
+                                                <input id="file-pic" name="file" type="file" data-show-remove="false"  multiple />
+                                                <p class="help-block">支持jpg、jpeg、png、gif,txt,"docx","zip","xlsx"格式，大小没限制</p>
+                                                <input  name="fileUpdate" type="button" th:onclick="javascript:updateHeadImg()" value="更新头像"  />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">邮箱：</label>
+                                                <input type="text" readonly th:value="${loginUser.email}" class="form-control" name="email" >
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">电话号码：</label>
+                                                <input type="text" readonly th:value="${loginUser.tel}" class="form-control" name="tel" >
+                                            </div>
+                                            <div class="form-group" th:if="${loginUser.type==3}">
+                                                <label class="control-label" >学号：</label>
+                                                <input type="text" readonly th:value="${loginUser.stunum}" class="form-control" name="stunum" >
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label  class="control-label">性别: <span th:text="${loginUser.sex?'男':'女'}"></span> </label>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label  class="control-label">用户类型: <span th:text="${loginUser.type==1?'管理员': loginUser.type==2?'老师':'学生' }"></span> </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- 新增表单结束-->
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                    </div>
+                </div>
+
+            </div>
+
+    </div>
+
+    </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+
+<div th:include="~{views/common/include :: #jsStyle}"></div>
+<script type="text/javascript"  th:src="@{/static/js/jquery.serialize-object.min.js}"></script>
+
+<!---->
+<script type="text/javascript" th:inline="javascript">
+
+    let headImg = [[${loginUser.headImg}]]
+
+    $("#file-pic").fileinput('destroy')
+
+    $('#file-pic').fileinput({
+        //初始化上传文件框
+        language: "zh",//配置语言
+        showUpload : false, //显示整体上传的按钮
+        showRemove: false,//显示移除图标
+        uploadAsync: true,//默认异步上传
+        uploadClass: "btn btn-primary",//设置上传按钮样式
+        showCaption: true,//是否显示标题
+        dropZoneEnabled: true,//是否显示拖拽区域
+        uploadUrl: '/file/uploadHeadImgFile',//这个是配置上传调取的后台地址，本项目是SSM搭建的
+        maxFileSize : 9999,//文件大小限制
+        maxFileCount: 9999,//允许最大上传数，可以多个，
+        enctype: 'multipart/form-data',
+        allowedFileExtensions : ["jpg", "png","gif","docx","zip","xlsx","txt"],/*上传文件格式限制*/
+        msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+        showBrowse: true,
+        browseOnZoneClick: true,
+        initialPreviewAsData:true,
+        // 在预览窗口中为新选择的文件缩略图设置文件操作的对象配置
+        fileActionSettings: {
+            showRemove: false, // 显示删除按钮
+            showUpload: false,  // 显示上传按钮
+            showDownload: false,// 显示下载按钮
+            showZoom: false,  // 显示预览按钮
+            showDrag: false,  // 显示拖拽
+
+        },
+        initialPreview: [
+            '/showimage/'+headImg
+        ],
+        initialCaption: headImg
+    });
+
+
+    $('#file-pic').on("fileuploaded", function(event, data, previewId, index) {
+        var response = data.response;
+        console.log(response)
+        if(response.isSuccess){
+            //提示框
+            location.reload()
+        }else{
+           utils.$msg("更新失败","red")
+        }
+
+    });
+
+    //触发更新头像
+    function updateHeadImg(){
+        if ($("#file-pic").val() != "") {
+            $('#file-pic').fileinput('upload'); //触发插件开始上传。
+        }else{
+            utils.$msg("请选择要更换的头像","red")
+        }
+    }
+
+
+
+</script>
+
+
+
+<style>
+    .my-container {
+        float: left;
+        display: inline-block;
+        margin-right:30px;
+    }
+
+    .myLabel-content ,.myText-content,.myBtn-content{
+        float: left;
+        display: inline-block;
+        line-height: 40px;
+        margin-left: 10px;
+    }
+    .myLabel-content,.myText-content input[type='text'],.myBtn-content .btn {
+        height: 38px;
+        font-size: 15px;
+    }
+    .myBtn-content .btn {
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+</style>
+
+
+
+</body>
+</html>

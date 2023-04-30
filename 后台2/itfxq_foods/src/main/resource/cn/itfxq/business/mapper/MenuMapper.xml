@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.itfxq.auth.mapper.MenuMapper">
+	
+	<resultMap id="BaseResultMap" type="cn.itfxq.auth.entity.Menu">
+		<id column="id" property="id"></id>
+		<result column="name" property="name"></result>
+		<result column="url" property="url"></result>
+		<result column="icon" property="icon"></result>
+		<collection property="childs" ofType="cn.itfxq.auth.entity.Menu">
+			<id column="sid" property="id"></id>
+			<result column="sname" property="name"></result>
+			<result column="surl" property="url"></result>
+			<result column="sicon" property="icon"></result>
+		</collection>
+	</resultMap>
+
+	<select id="queryAll" resultType="Menu">
+		select * from t_menu
+	</select>
+
+
+    <!-- 根据登录用户查询菜单-->
+	<select id="findAll" parameterType="java.lang.Long"
+			resultMap="BaseResultMap">
+				select
+				DISTINCT
+				pub.id,
+				pub.`name`,
+				pub.url,
+				pub.icon,
+				sub.id sid,
+				sub. NAME sname,
+				sub.url surl,
+				sub.icon sicon
+				from (select m.*
+				from t_user u
+				join t_user_role ur on u.id = ur.userid
+				join t_role r on ur.roleid = r.id
+				join t_role_permission rp on r.id = rp.roleid
+				join t_permission p on p.id = rp.permissionid
+				join t_menu m on p.menuid = m.id
+				where ur.userid = #{userid}) sub
+				join t_menu pub on sub.pid = pub.id
+	</select>
+
+	<!-- 菜单维护-->
+	<select id="queryAllMenu" resultMap="menuMap">
+		select t.id,t.name,t.url,t.pid,t.icon,p.id pid,p.name pname from
+		t_menu t
+ 		left join t_permission p on p.menuid = t.id
+	</select>
+	<resultMap id="menuMap" type="Menu">
+		<id property="id" column="id"></id>
+		<result property="name" column="name"></result>
+		<result property="url" column="url"></result>
+		<result property="pid" column="pid"></result>
+		<result property="icon" column="icon"></result>
+		<association property="permission" javaType="Permission">
+			<id property="id" column="pid"></id>
+			<result property="name" column="pname"></result>
+		</association>
+	</resultMap>
+
+	<!-- 保存一级菜单-->
+	<insert id="addTopMenu" parameterType="Menu">
+		insert into t_menu(name,icon) values(#{name},#{icon})
+	</insert>
+
+	<!-- 保存子级菜单-->
+	<insert id="addSubMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="id">
+		insert into t_menu(name,url,pid,icon) values(#{name},#{url},#{pid},#{icon})
+	</insert>
+
+	<update id="editMenu" parameterType="Menu">
+		update t_menu
+		<set>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="icon != null">
+				icon=#{icon},
+			</if>
+			<if test="url != null">
+				url=#{url},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

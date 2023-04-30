@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+                 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>后台管理系统模板</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="模板">
+    <meta name="description" content="后台管理系统">
+    <meta name="author" content="SoulCoder">
+    <div th:include="~{views/common/include :: cssStyle }"></div>
+</head>
+<body>
+<div class="coder-layout-web">
+    <div class="coder-layout-container">
+        <!--左侧导航-->
+        <div th:include="~{views/common/include :: #asideStyle }"></div>
+        <!--End 左侧导航-->
+        <!--头部信息-->
+        <div th:include="~{views/common/include :: #headerStyle }"></div>
+        <!--End 头部信息-->
+        <!--页面主要内容-->
+        <main class="coder-layout-content">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-toolbar clearfix">
+                                <!-- 查询搜索框start-->
+                                <div id="toolbar">
+                                    <div class="my-container">
+                                        <label class="myLabel-content">名称：</label>
+                                        <div class="myText-content">
+                                            <input id="q_username" name="username" type="text" class="form-control" placeholder="输入名称">
+                                        </div>
+                                    </div>
+                                    <div class="my-container">
+                                        <label class="myLabel-content">邮件：</label>
+                                        <div class="myText-content">
+                                            <input id="q_email"  name="email"   type="text" class="form-control" placeholder="输入邮件">
+                                        </div>
+                                    </div>
+                                    <div class="myBtn-content">
+                                        <button id="search" type="button" class="btn btn-primary" data-toggle="modal" data-method="search">
+                                            <i class="mdi mdi-account-search"></i>搜索</button>
+                                    </div>
+                                </div>
+                                <!-- 查询搜索框end-->
+                                <!-- 按钮区start-->
+                                <div class="toolbar-btn-action">
+                                    <button sec:authorize= "hasRole('管理员') && hasAuthority('user:add')" type="button" class="btn btn-primary" data-toggle="modal" data-method="add" >
+                                        <i class="mdi mdi-plus"></i>新增
+                                    </button>
+
+                                    <a class="btn btn-pink" href="#!" data-method="addUserRole"><i class="mdi mdi-plus"></i>设定角色</a>
+                                    <!--<a class="btn btn-info" href="#!"><i class="mdi mdi-window-close"></i> 导入</a>-->
+                                    <!--<a class="btn btn-pink" href="#!"><i class="mdi mdi-window-close"></i> 导出</a>-->
+
+                                </div>
+                                <!-- 按钮区end-->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="userTable" ></table>
+                                </div>
+                            </div>
+
+                            <!-- 新增表单start-->
+                            <div class="modal fade" id="userAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="exampleModalLabel">新增用户</h4>
+                                        </div>
+                                        <form id="userAddForm" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+
+                                                    <div class="form-group">
+                                                        <label for="recipient-name" class="control-label">用户名：</label>
+                                                        <input type="text" class="form-control" name="username" id="recipient-name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="recipient-email" class="control-label">邮箱：</label>
+                                                        <input type="text" class="form-control" name="email" id="recipient-email">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="recipient-tel" class="control-label">电话号码：</label>
+                                                        <input type="text" class="form-control" name="tel" id="recipient-tel">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="recipient-password" class="control-label">密码：</label>
+                                                        <input type="password" class="form-control" name="password" id="recipient-password">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="recipient-confirmPassword" class="control-label">确认密码：</label>
+                                                        <input type="password" class="form-control" name="confirmPassword" id="recipient-confirmPassword">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="control-label">性别:</label>
+                                                        <div class="clearfix">
+                                                            <label class="coder-radio radio-inline radio-primary">
+                                                                <input type="radio"  name="sex" value="0"><span>女</span>
+                                                            </label>
+                                                            <label class="coder-radio radio-inline radio-primary">
+                                                                <input type="radio" name="sex" value="1" checked><span>男</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                <!-- 头像上传-->
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <input id="file-pic" name="file" type="file" value="上传" multiple/>
+                                                        <p class="help-block">支持jpg、jpeg、png、gif,txt,"docx","zip","xlsx"格式，大小没限制</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                <button type="button" data-method='save' class="btn btn-primary">保存</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 新增表单结束-->
+                            <!-- 修改表单start-->
+                            <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" >修改用户</h4>
+                                        </div>
+                                        <form id="userEditForm" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                                <input type="hidden" id="e_id" class="form-control" name="id">
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="control-label">用户名：</label>
+                                                    <input type="text" id="e_username" class="form-control" name="username">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-password" class="control-label">密码：</label>
+                                                    <input type="text" id="e_pwd" class="form-control" name="password">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-email" class="control-label">邮箱：</label>
+                                                    <input type="text" id="e_email" class="form-control" name="email" >
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-tel" class="control-label">电话号码：</label>
+                                                    <input type="text" id="e_tel" class="form-control" name="tel" >
+                                                </div>
+                                                <div class="form-group">
+                                                    <label  class="control-label">性别:</label>
+                                                    <div class="clearfix">
+                                                        <label class="coder-radio radio-inline radio-primary">
+                                                            <input type="radio"   name="sex" value="0"><span>女</span>
+                                                        </label>
+                                                        <label class="coder-radio radio-inline radio-primary">
+                                                            <input type="radio" name="sex" value="1" checked><span>男</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                <button type="button" data-method='editSave' class="btn btn-primary">保存</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 修改表单end-->
+
+                        <!-- 设定角色start-->
+                        <div class="modal fade" id="addUserRoleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" >添加用户角色</h4>
+                                    </div>
+                                    <form id="addUserRoleForm" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <input type="hidden" id="addRole_userid" class="form-control" name="id">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">用户名：</label>
+                                                <input type="text" id="addRole_username" class="form-control" name="username">
+                                            </div>
+                                            <!-- 角色列表-->
+                                            <div class="form-group row">
+                                                <div class="col-xs-12">
+                                                    <label for="recipient-name" class="control-label">选择权限：</label>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <label th:each="role : ${roles}" style="margin-right: 10px">
+                                                        <input name="roles[]" type="checkbox" class="checkbox-child" th:id="'rid_'+${role.id}"  th:value="${role.id}">
+                                                        <span th:text="${role.name}"></span>
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            <button type="button" data-method='addUserRoleSave' class="btn btn-primary">保存</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 设定角色end-->
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+
+<div th:include="~{views/common/include :: #jsStyle}"></div>
+<script type="text/javascript"  th:src="@{/static/js/jquery.serialize-object.min.js}"></script>
+
+<script type="text/javascript"  th:src="@{/static/api/user.js}"></script>
+
+
+
+<style>
+    .my-container {
+        float: left;
+        display: inline-block;
+        margin-right:30px;
+    }
+
+    .myLabel-content ,.myText-content,.myBtn-content{
+        float: left;
+        display: inline-block;
+        line-height: 40px;
+        margin-left: 10px;
+    }
+    .myLabel-content,.myText-content input[type='text'],.myBtn-content .btn {
+        height: 38px;
+        font-size: 15px;
+    }
+    .myBtn-content .btn {
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+</style>
+
+
+
+</body>
+</html>

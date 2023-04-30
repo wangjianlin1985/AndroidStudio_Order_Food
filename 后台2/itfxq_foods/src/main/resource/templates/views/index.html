@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>后台管理系统模板</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="模板">
+<meta name="description" content="后台管理系统">
+<meta name="author" content="soulCoder">
+ <div th:include="~{views/common/include :: cssStyle }"></div>
+</head>
+
+<body>
+<div class="coder-layout-web">
+  <div class="coder-layout-container">
+    <!--左侧导航-->
+       <div th:include="~{views/common/include :: #asideStyle }"></div>
+    <!--End 左侧导航-->
+
+    <!--头部信息-->
+      <div th:include="~{views/common/include :: #headerStyle }"></div>
+    <!--End 头部信息-->
+
+    <!--页面主要内容-->
+    <main class="coder-layout-content">
+
+      <div class="container-fluid">
+
+      </div>
+
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+
+<div th:include="~{views/common/include :: #jsStyle }"></div>
+<!--图表插件-->
+<script type="text/javascript">
+$(document).ready(function(e) {
+
+
+
+});
+</script>
+</body>
+</html>

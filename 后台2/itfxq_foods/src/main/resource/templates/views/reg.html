@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>登录页面-后台管理系统</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="后台管理系统">
+<meta name="description" content="后台管理系统">
+<meta name="author" content="soulCoder">
+  <link href="css/bootstrap.min.css"  rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}">
+  <!-- 上传控件-->
+  <link  th:href="@{/static/js/plugins/fileinput/css/fileinput.css}" media="all" rel="stylesheet" type="text/css" />
+  <link  rel="stylesheet" th:href="@{/static/css/materialdesignicons.min.css}">
+  <link  rel="stylesheet" th:href="@{/static/css/style.min.css}">
+  <!--对话框-->
+  <link rel="stylesheet" th:href="@{/static/js/jconfirm/jquery-confirm.min.css}">
+<style>
+  body{
+    background-image: url('/static/images/bg1.jpg');
+    background-repeat: repeat;
+    background-size: 100% auto;
+  }
+.coder-wrapper {
+    position: relative;
+}
+.coder-login {
+    display: flex !important;
+    min-height: 100vh;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.login-center {
+    background: #fff;
+    min-width: 38.25rem;
+    padding: 2.14286em 3.57143em;
+    border-radius: 5px;
+    margin: 2.85714em 0;
+}
+.login-header {
+    margin-bottom: 1.5rem !important;
+}
+.login-center .has-feedback.feedback-left .form-control {
+    padding-left: 38px;
+    padding-right: 12px;
+}
+.login-center .has-feedback.feedback-left .form-control-feedback {
+    left: 0;
+    right: auto;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    z-index: 4;
+    color: #dcdcdc;
+}
+.login-center .has-feedback.feedback-left.row .form-control-feedback {
+    left: 15px;
+}
+</style>
+</head>
+
+<body>
+<div class="row coder-wrapper">
+  <div class="coder-login">
+    <div class="login-center">
+      <div class="login-header text-center">
+        <a href="../index.html"> <img alt="soulCoder" th:src="@{/static/images/logo-sidebar.png}"
+                                      src="images/logo-sidebar.png"> </a>
+      </div>
+      <form id="userRegForm" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">用户账号：</label>
+            <input type="text" class="form-control" name="username" id="recipient-name">
+          </div>
+          <div class="form-group">
+            <label for="recipient-email" class="control-label">邮箱：</label>
+            <input type="text" class="form-control" name="email" id="recipient-email">
+          </div>
+          <div class="form-group">
+            <label for="recipient-tel" class="control-label">电话号码：</label>
+            <input type="text" class="form-control" name="tel" id="recipient-tel">
+          </div>
+
+          <div class="form-group">
+            <label for="recipient-password" class="control-label">密码：</label>
+            <input type="password" class="form-control" name="password" id="recipient-password">
+          </div>
+          <div class="form-group">
+            <label  class="control-label">性别:</label>
+            <div class="clearfix">
+              <label class="coder-radio radio-inline radio-primary">
+                <input type="radio"  name="sex" value="0" checked><span>女</span>
+              </label>
+              <label class="coder-radio radio-inline radio-primary">
+                <input type="radio" name="sex" value="1" ><span>男</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="recipient-stunum" class="control-label">学生学号(学生填写)：</label>
+            <input type="text" class="form-control" name="stunum" id="recipient-stunum">
+          </div>
+          <div class="form-group">
+            <label class="control-label">隶属班级：</label>
+            <select class="form-control" id="classesid" name="classesid" size="1">
+              <option  th:each="classes : ${classes}" th:value="${classes.id}">
+                  <span th:text="${classes.name}"></span>
+              </option>
+            </select>
+          </div>
+
+
+          <div class="form-group">
+            <label  class="control-label">类型:</label>
+            <div class="clearfix">
+              <label class="coder-radio radio-inline radio-primary">
+                <input type="radio"  name="type" value="2"  checked><span>我是老师</span>
+              </label>
+              <label class="coder-radio radio-inline radio-primary">
+                <input type="radio" name="type" value="3"><span>我是学生</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 头像上传-->
+          <div class="form-group">
+            <label  class="control-label">头像:</label>
+              <input id="file-pic" name="file" type="file" value="上传" multiple/>
+              <p class="help-block">支持jpg、jpeg、png、gif,txt,"docx","zip","xlsx"格式，大小没限制</p>
+
+          </div>
+
+        </div>
+        <div class="modal-footer row">
+
+          <div class="col-lg-12">
+            <button type="button" data-method='regSaveUser' class="btn btn-primary">提交保存</button>
+            <button type="button" data-method='toLogin' class="btn btn-primary">返回登录</button>
+          </div>
+        </div>
+      </form>
+      <hr>
+
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js" th:src="@{/static/js/jquery.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+<!-- 上传控件-->
+<script type="text/javascript"  th:src="@{/static/js/plugins/fileinput/js/fileinput.js}"></script>
+<script type="text/javascript"  th:src="@{/static/js/plugins/fileinput/js/locales/zh.js}"></script>
+
+<script type="text/javascript"  th:src="@{/static/js/jquery.serialize-object.min.js}"></script>
+<script type="text/javascript"  th:src="@{/static/js/jconfirm/jquery-confirm.min.js}"></script>
+<script type="text/javascript">
+
+  $(function(){
+      var userId ;
+      $("button,a").on('click',function(){
+          //获取到 a标签里面配置 data-method
+          var methodName = $(this).data('method');
+          if(methodName){
+              doMethod[methodName]();
+          }
+      });
+      var doMethod = {
+          toLogin: function () {
+             window.location.href="/toLogin";
+          },
+          regSaveUser:function(){
+              var formParamObj =  $("#userRegForm").serializeObject();
+              console.log(formParamObj);
+              //验证通过
+              $.ajax({
+                  url: "/user/regSaveUser",
+                  async: false,
+                  type: "POST",
+                  data: formParamObj,
+                  success: function (data) {
+                      userId = data;
+                      if (!userId) {
+                          $.confirm({
+                              title: '温馨提示',
+                              content: '注册失败',
+                              type: 'green',
+                              buttons: {
+                                  omg: {
+                                      text: '谢谢',
+                                      btnClass: 'btn-green',
+                                  }
+                              }
+                          });
+
+                      }else{
+                          //不上传图片时，不触发bootstrap 上传插件的初始化方法。仅将表单里面的（除图片以外的）内容提交，
+                          if ($("#file-pic").val() != "") {
+                              $('#file-pic').fileinput('upload'); //触发插件开始上传。
+                          }
+                      }
+
+                  }
+              });
+          }
+      }
+
+      //上传图片
+      //上传
+      $('#file-pic').fileinput({
+          //初始化上传文件框
+          language: "zh",//配置语言
+          showUpload : false, //显示整体上传的按钮
+          showRemove : true,//显示整体删除的按钮
+          uploadAsync: true,//默认异步上传
+          uploadLabel: "上传",//设置整体上传按钮的汉字
+          removeLabel: "移除",//设置整体删除按钮的汉字
+          uploadClass: "btn btn-primary",//设置上传按钮样式
+          showCaption: true,//是否显示标题
+          dropZoneEnabled: false,//是否显示拖拽区域
+          uploadUrl: '/file/uploadFile',//这个是配置上传调取的后台地址，本项目是SSM搭建的
+          maxFileSize : 9999,//文件大小限制
+          maxFileCount: 9999,//允许最大上传数，可以多个，
+          enctype: 'multipart/form-data',
+          allowedFileExtensions : ["jpg", "png","gif","docx","zip","xlsx","txt"],/*上传文件格式限制*/
+          msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+          showBrowse: true,
+          browseOnZoneClick: true,
+          slugCallback : function(filename) {
+              return filename.replace('(', '_').replace(']', '_');
+          },
+          uploadExtraData: function(previewId, index) {   //额外参数的关键点
+              //{ id: userId }
+              return { id: userId };
+          }
+      });
+
+      $('#file-pic').on("fileuploaded", function(event, data, previewId, index) {
+          var response = data.response;
+          console.log(response);
+          if(response.isSuccess){
+              $.confirm({
+                  title: '温馨提示',
+                  content: '保存成功',
+                  type: 'green',
+                  buttons: {
+                      omg: {
+                          text: '谢谢',
+                          btnClass: 'btn-green',
+                      }
+                  }
+              });
+          }else{
+              $.confirm({
+                  title: '温馨提示',
+                  content: '操作失败',
+                  type: 'red',
+                  buttons: {
+                      omg: {
+                          text: '重试',
+                          btnClass: 'btn-red',
+                      }
+                  }
+              });
+          }
+      });
+  });
+</script>
+</body>
+</html>

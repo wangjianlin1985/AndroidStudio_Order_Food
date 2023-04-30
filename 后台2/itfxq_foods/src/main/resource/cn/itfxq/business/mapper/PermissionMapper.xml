@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.itfxq.auth.mapper.PermissionMapper">
+	
+	<resultMap id="BaseResultMap" type="cn.itfxq.auth.entity.Permission">
+		<id column="id" property="id"></id>
+		<result column="name" property="name"></result>
+		<result column="title" property="title"></result>
+		<result column="pid" property="pid"></result>
+	</resultMap>
+	<!-- 根据用户id查询权限-->
+	<select id="listPermissionByUserId"
+			resultMap="BaseResultMap">
+				select DISTINCT p.*
+				from t_role r
+				join t_user_role ur on r.id = ur.roleid
+			 join t_role_permission rp on rp.roleid = r.id
+			 join t_permission p on p.id = rp.permissionid
+				 where ur.userid = #{userid}
+
+	</select>
+
+	<!-- 添加菜单权限 addMenuPermission-->
+	<insert id="addMenuPermission" parameterType="Permission">
+		insert into t_permission (name,title,pid,menuid)
+		values(#{name},#{title},#{pid},#{menuid})
+	</insert>
+
+	<select id="queryAll" resultType="Permission">
+		select * from t_permission
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_img"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/itfxq_lb" />
+    <TextView
+       android:id="@+id/cdlineId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="菜单"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:layout_below="@id/iv_img"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cdlineId">
+        <RelativeLayout
+            android:id="@+id/leftRv"
+            android:layout_width="100dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/rcTv"
+                android:text="热菜"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/lcTv"
+                android:layout_below="@id/rcTv"
+                android:text="凉菜"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp">
+
+            </TextView>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tpTv"
+                android:layout_below="@id/lcTv"
+                android:text="甜品"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/ggTv"
+                android:layout_below="@id/tpTv"
+                android:text="干锅"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp">
+
+            </TextView>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tangTv"
+                android:layout_below="@id/ggTv"
+                android:text="汤"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp">
+
+            </TextView>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/ylTv"
+                android:layout_below="@id/tangTv"
+                android:text="饮料"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp">
+
+            </TextView>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/riceTv"
+                android:layout_below="@id/ylTv"
+                android:text="米饭"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp">
+
+            </TextView>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/RightRv"
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@id/leftRv"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ListView
+                    android:id="@+id/listLv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="50dp" />
+
+
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <include layout="@layout/car_list" />
+    <include layout="@layout/foods_car" />
+
+
+</RelativeLayout>

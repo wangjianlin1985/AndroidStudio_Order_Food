@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+                 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, food-scalable=no" />
+    <title>后台管理系统模板</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="模板">
+    <meta name="description" content="后台管理系统">
+    <meta name="author" content="SoulCoder">
+    <div th:include="~{views/common/include :: cssStyle }"></div>
+</head>
+<body>
+<div class="coder-layout-web">
+    <div class="coder-layout-container">
+        <!--左侧导航-->
+        <div th:include="~{views/common/include :: #asideStyle }"></div>
+        <!--End 左侧导航-->
+        <!--头部信息-->
+        <div th:include="~{views/common/include :: #headerStyle }"></div>
+        <!--End 头部信息-->
+        <!--页面主要内容-->
+        <main class="coder-layout-content">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-toolbar clearfix">
+                                <!-- 查询搜索框start-->
+                                <div id="toolbar">
+                                    <div class="my-container">
+                                        <label class="myLabel-content">名称：</label>
+                                        <div class="myText-content">
+                                            <input id="q_foodName" name="foodName" type="text" class="form-control" placeholder="输入名称">
+                                        </div>
+                                    </div>
+                                    <div class="myBtn-content">
+                                        <button id="search" type="button" class="btn btn-primary" data-toggle="modal" data-method="search">
+                                            <i class="mdi mdi-account-search"></i>搜索</button>
+                                    </div>
+                                </div>
+                                <!-- 查询搜索框end-->
+                                <!-- 按钮区start-->
+                                <div class="toolbar-btn-action">
+                                    <button  type="button" class="btn btn-primary" data-toggle="modal" data-method="add" >
+                                        <i class="mdi mdi-plus"></i>新增
+                                    </button>
+
+                                </div>
+                                <!-- 按钮区end-->
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="foodTable" ></table>
+                                </div>
+                            </div>
+
+                            <!-- 新增表单start-->
+                            <div class="modal fade" id="foodAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="exampleModalLabel">新增食物</h4>
+                                        </div>
+                                        <form id="foodAddForm" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+
+                                                    <div class="form-group">
+                                                        <label for="recipient-name" class="control-label">食物名称：</label>
+                                                        <input type="text" class="form-control" name="foodName" id="recipient-name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="recipient-taste" class="control-label">食物口味：</label>
+                                                        <input type="text" class="form-control" name="taste" id="recipient-taste">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="recipient-price" class="control-label">价格：</label>
+                                                        <input type="text" class="form-control" name="price" id="recipient-price">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="recipient-foodType" class="control-label">食物类型:</label>
+                                                        <select class="form-control" name="foodType" id="recipient-foodType">
+                                                            <option value="-1">----请选择----</option>
+                                                            <option value="1">热菜</option>
+                                                            <option value="2">凉菜</option>
+                                                            <option value="3">甜品</option>
+                                                            <option value="4">干锅</option>
+                                                            <option value="5">汤</option>
+                                                            <option value="6">饮料</option>
+                                                            <option value="7">米饭</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- 头像上传-->
+                                                    <div class="form-group">
+                                                        <label for="recipient-foodType" class="control-label">食物图片:</label>
+
+                                                            <input id="file-pic" name="file" type="file" value="上传" multiple/>
+                                                            <p class="help-block">支持jpg、jpeg、png、gif,txt,"docx","zip","xlsx"格式，大小没限制</p>
+
+                                                    </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                <button type="button" data-method='save' class="btn btn-primary">保存</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 新增表单结束-->
+
+
+                            <!-- 修改表单start-->
+                            <div class="modal fade" id="foodEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" >修改食物</h4>
+                                        </div>
+                                        <form id="foodEditForm" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                                <input type="hidden" id="e_id" class="form-control" name="id">
+                                                <div class="form-group">
+                                                <label for="recipient-name" class="control-label">食物名称：</label>
+                                                <input type="text" id="e_foodName" class="form-control" name="foodName">
+                                            </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-taste" class="control-label">食物口味：</label>
+                                                    <input type="text" id="e_taste" class="form-control" name="taste">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-price" class="control-label">价格：</label>
+                                                    <input type="text" id="e_price" class="form-control" name="price">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="recipient-foodType" class="control-label">食物类型:</label>
+                                                    <select id="e_foodType" class="form-control" name="foodType" >
+                                                        <option value="-1">----请选择----</option>
+                                                        <option value="1">热菜</option>
+                                                        <option value="2">凉菜</option>
+                                                        <option value="3">甜品</option>
+                                                        <option value="4">干锅</option>
+                                                        <option value="5">汤</option>
+                                                        <option value="6">饮料</option>
+                                                        <option value="7">米饭</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- 食物图片-->
+                                                <div class="form-group">
+                                                    <label for="recipient-foodType" class="control-label">食物图片:</label>
+
+                                                    <input id="e-file-pic" name="file" type="file" value="上传" multiple/>
+                                                    <p class="help-block">支持jpg、jpeg、png、gif,txt,"docx","zip","xlsx"格式，大小没限制</p>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                <button type="button" data-method='editSave' class="btn btn-primary">保存</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 修改表单end-->
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+
+<div th:include="~{views/common/include :: #jsStyle}"></div>
+<script type="text/javascript"  th:src="@{/static/js/jquery.serialize-object.min.js}"></script>
+
+<script type="text/javascript"  th:src="@{/static/api/food.js}"></script>
+
+
+
+<style>
+    .my-container {
+        float: left;
+        display: inline-block;
+        margin-right:30px;
+    }
+
+    .myLabel-content ,.myText-content,.myBtn-content{
+        float: left;
+        display: inline-block;
+        line-height: 40px;
+        margin-left: 10px;
+    }
+    .myLabel-content,.myText-content input[type='text'],.myBtn-content .btn {
+        height: 38px;
+        font-size: 15px;
+    }
+    .myBtn-content .btn {
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+</style>
+
+
+
+</body>
+</html>

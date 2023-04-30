@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<div id="chartPart">
+<div class="col-lg-18">
+    <div class="card">
+        <div class="card-header"><h4>用户近半年工资图</h4></div>
+        <div class="card-body">
+            <canvas id="chartVbar1" width="400" height="250"></canvas>
+        </div>
+    </div>
+</div>
+    <script type="text/javascript"  th:src="@{/static/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/Chart.js}"></script>
+
+<script>
+    new Chart($("#chartVbar1"), {
+        type: 'bar',
+        data: {
+            labels: ["一月", "二月", "三月", "四月", "五月", "六月"],
+            datasets: [{
+                label: "收入",
+                backgroundColor: "rgba(51,202,185,0.5)",
+                borderColor: "rgba(0,0,0,0)",
+                hoverBackgroundColor: "rgba(51,202,185,0.7)",
+                hoverBorderColor: "rgba(0,0,0,0)",
+                data: [9881.00, 10002.00, 16899.00, 14800.22, 13004.00, 10000.00]
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+</div>
+</body>
+</html>

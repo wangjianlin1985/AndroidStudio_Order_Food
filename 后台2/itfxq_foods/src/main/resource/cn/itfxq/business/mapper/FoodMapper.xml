@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.itfxq.business.food.mapper.FoodMapper">
+
+	<sql id="whereSql">
+		<where>
+			<if test="foodName != null and foodName != ''">
+				and u.foodName like concat('%',#{foodName},'%')
+			</if>
+
+		</where>
+	</sql>
+
+	<select id="queryAll" resultType="Food">
+		select * from t_foods
+	</select>
+
+
+	<!--分页-->
+	<select id="queryTotal" parameterType="FoodQuery"
+			resultType="java.lang.Long">
+		select count(*)
+		from t_foods u
+		<include refid="whereSql"></include>
+	</select>
+
+	<select id="queryData" parameterType="FoodQuery" resultType="Food">
+		select u.*
+		from t_foods u
+		<include refid="whereSql"></include>
+		order by u.id desc
+		limit #{offset},#{pageSize}
+	</select>
+
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

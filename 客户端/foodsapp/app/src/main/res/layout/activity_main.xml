@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/topLayout"
+        android:orientation="vertical"
+        android:background="#FDD835"
+       >
+        <!--微信-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="itfxq-订餐APP"
+            android:layout_centerVertical="true"
+            android:textColor="#FF9900"
+            android:textSize="25sp"></TextView>
+
+        <!--菜单按钮-->
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btn_menu"
+            android:layout_alignParentRight="true"
+            android:onClick="OnMenu"
+            android:layout_centerVertical="true"
+            android:background="@drawable/add"></Button>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_img"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/itfxq_lb" />
+
+
+        <!-- 首页菜单start -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom">
+            <!-- 第一个start-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <!-- 圆形按钮start-->
+                <LinearLayout
+                    android:id="@+id/circleLy1"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/rcId"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@mipmap/rc"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textColor="#6200EE"
+                        android:textAlignment="center"
+
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 圆形按钮end-->
+                <!-- 字体start-->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:text="热菜"
+                        android:textSize="20sp"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 字体end-->
+
+            </LinearLayout>
+            <!-- 第一个end-->
+
+            <!-- 第二个start-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <!-- 圆形按钮start-->
+                <LinearLayout
+                    android:id="@+id/circleLy2"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/lcId"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@mipmap/lc"
+
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textColor="#6200EE"
+                        android:textAlignment="center"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 圆形按钮end-->
+                <!-- 字体start-->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:text="凉菜"
+                        android:textSize="20sp"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 字体end-->
+
+            </LinearLayout>
+            <!-- 第二个end-->
+
+            <!-- 第三个start-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <!-- 圆形按钮start-->
+                <LinearLayout
+                    android:id="@+id/circleLy3"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tpId"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@mipmap/td"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textColor="#6200EE"
+                        android:textAlignment="center"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 圆形按钮end-->
+                <!-- 字体start-->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:text="甜点"
+                        android:textSize="20sp"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 字体end-->
+
+            </LinearLayout>
+            <!-- 第三个end-->
+
+        </LinearLayout>
+        <!-- 首页菜单end -->
+
+        <!-- 第二排开始 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="bottom">
+            <!-- 第一个start-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <!-- 圆形按钮start-->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/ggId"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@mipmap/gg"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textColor="#6200EE"
+                        android:textAlignment="center"
+
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 圆形按钮end-->
+                <!-- 字体start-->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:text="干锅"
+                        android:textSize="20sp"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 字体end-->
+
+            </LinearLayout>
+            <!-- 第一个end-->
+
+            <!-- 第二个start-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <!-- 圆形按钮start-->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tangId"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@mipmap/tang"
+
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textColor="#6200EE"
+                        android:textAlignment="center"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 圆形按钮end-->
+                <!-- 字体start-->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:text="汤"
+                        android:textSize="20sp"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 字体end-->
+
+            </LinearLayout>
+            <!-- 第二个end-->
+
+            <!-- 第三个start-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <!-- 圆形按钮start-->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/ylId"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@mipmap/yl"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textColor="#6200EE"
+                        android:textAlignment="center"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 圆形按钮end-->
+                <!-- 字体start-->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:text="饮料"
+                        android:textSize="20sp"
+                        >
+                    </TextView>
+                </LinearLayout>
+                <!-- 字体end-->
+
+            </LinearLayout>
+            <!-- 第三个end-->
+
+        </LinearLayout>
+        <!-- 第二排end -->
+
+    <!-- 第三排开始 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="bottom">
+        <!-- 第一个start-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <!-- 圆形按钮start-->
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/riceId"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@mipmap/rice"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="#6200EE"
+                    android:textAlignment="center">
+                </TextView>
+            </LinearLayout>
+            <!-- 圆形按钮end-->
+            <!-- 字体start-->
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:text="米饭"
+                    android:textSize="20sp">
+                </TextView>
+            </LinearLayout>
+            <!-- 字体end-->
+
+        </LinearLayout>
+        <!-- 第一个end-->
+
+
+    </LinearLayout>
+    <!-- 第三排end -->
+
+
+
+</LinearLayout>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+                 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>后台管理系统模板</title>
+
+    <div th:include="~{views/common/include :: cssStyle }"></div>
+</head>
+<body>
+<div class="coder-layout-web">
+    <div class="coder-layout-container">
+        <!--左侧导航-->
+        <div th:include="~{views/common/include :: #asideStyle }"></div>
+        <!--End 左侧导航-->
+        <!--头部信息-->
+        <div th:include="~{views/common/include :: #headerStyle }"></div>
+        <!--End 头部信息-->
+        <!--页面主要内容-->
+        <main class="coder-layout-content"  >
+
+            <div class="container-fluid"
+                 style="background-color:transparent;
+                         padding-top: 0px;
+                         padding-bottom: 0px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <!-- 修改密码表单start-->
+                            <div class="modal-dialog"
+                                 style="float:left;
+                                     margin-top:0px;
+                                     width: 100%;
+                                     background-color: black;
+                                        color:#ff8f2b;" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" >
+                                            <span style="font-size: 18px;color:#ff8f2b;font-weight: bold">您的位置: 修改密码</span>
+                                        </h4>
+                                    </div>
+                                    <form id="stuEditForm" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <input type="hidden" id="e_id" th:value="${loginUser.id}" class="form-control" name="id">
+                                            <div class="form-group">
+                                                <label class="control-label">用户名：</label>
+                                                <input type="text" readonly th:value="${loginUser.username}" class="form-control" name="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">新密码：</label>
+                                                <input type="password"  class="form-control" name="password" id="password">
+                                            </div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" th:onclick='javascript:clearForm()' data-dismiss="modal">清空</button>
+                                            <button type="button" th:onclick='javascript:editPwd()' class="btn btn-primary">保存</button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- 修改密码表单结束-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+    </div>
+
+    </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+
+<div th:include="~{views/common/include :: #jsStyle}"></div>
+<script type="text/javascript"  th:src="@{/static/js/jquery.serialize-object.min.js}"></script>
+
+<!--js文件-->
+<script  th:inline="javascript">
+
+    //修改密码
+    function editPwd(){
+        //修改密码
+        var newpassword=$("#password").val()
+        var e_id=$("#e_id").val()
+        if(newpassword == ""){
+            utils.$msg("密码不能为空","red");
+            return;
+        }
+            //验证通过
+            $.ajax({
+                url: "/user/editsavepwd",
+                async: false,
+                type: "POST",
+                data: {id:e_id,password:newpassword},
+                success: function (data) {
+                    if (data.isSuccess) {
+                        utils.$msg("修改成功","orange");
+                    } else  {
+                        utils.$msg("修改失败","red");
+                    }
+
+                }
+            });
+    }
+    //清理表单
+    function clearForm(){
+        $("#password").val('')
+    }
+
+
+</script>
+
+
+
+<style>
+    .my-container {
+        float: left;
+        display: inline-block;
+        margin-right:30px;
+    }
+
+    .myLabel-content ,.myText-content,.myBtn-content{
+        float: left;
+        display: inline-block;
+        line-height: 40px;
+        margin-left: 10px;
+    }
+    .myLabel-content,.myText-content input[type='text'],.myBtn-content .btn {
+        height: 38px;
+        font-size: 15px;
+    }
+    .myBtn-content .btn {
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+</style>
+
+
+
+</body>
+</html>

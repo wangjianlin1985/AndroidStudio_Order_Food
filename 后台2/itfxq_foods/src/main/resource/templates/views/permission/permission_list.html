@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>后台管理系统模板</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="模板">
+    <meta name="description" content="后台管理系统的HTML模板。">
+    <meta name="author" content="SoulCoder">
+    <div th:include="~{views/common/include :: cssStyle }"></div>
+    <!-- 引入treegrid-->
+    <link rel="stylesheet" th:href="@{/static/js/plugins/bootstrap-table-treegrid/jquery.treegrid.min.css}">
+
+</head>
+<body>
+<div class="coder-layout-web">
+    <div class="coder-layout-container">
+        <!--左侧导航-->
+        <div th:include="~{views/common/include :: #asideStyle }"></div>
+        <!--End 左侧导航-->
+        <!--头部信息-->
+        <div th:include="~{views/common/include :: #headerStyle }"></div>
+        <!--End 头部信息-->
+        <!--页面主要内容-->
+        <main class="coder-layout-content">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-toolbar clearfix">
+                                <!-- 查询搜索框start-->
+                                <div id="toolbar">
+                                    <div class="my-container">
+                                        <label class="myLabel-content">名称：</label>
+                                        <div class="myText-content">
+                                            <input id="q_name" name="name" type="text" class="form-control" placeholder="输入权限名称">
+                                        </div>
+                                    </div>
+                                    <div class="myBtn-content">
+                                        <button id="search" type="button" class="btn btn-primary" data-toggle="modal" data-method="search">
+                                            <i class="mdi mdi-account-search"></i>搜索</button>
+                                    </div>
+                                </div>
+                                <!-- 查询搜索框end-->
+                                <!-- 按钮区start-->
+                                <div class="toolbar-btn-action">
+
+                                </div>
+                                <!-- 按钮区end-->
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <h1></h1>
+                                         <table id="menuTable"></table>
+                                    <br/>
+
+                                </div>
+
+
+                                <!-- 新增按钮权限的对话框 start-->
+                                <div class="modal fade" id="AddBtnPermissionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" >新增页面按钮权限</h4>
+                                            </div>
+                                            <form id="addBtnPermissionForm" method="post" enctype="multipart/form-data">
+                                                <div class="modal-body">
+                                                    <!-- 所属页面-->
+                                                    <div class="form-group">
+                                                        <!-- 页面权限id-->
+                                                        <input type="hidden" class="form-control" name="pid" id="a_pid">
+                                                        <!-- 页面权限名称-->
+                                                        <label for="a_ptitle" class="control-label">页面权限名称：</label>
+                                                        <input type="text" class="form-control" name="ptitle" id="a_ptitle">
+                                                    </div>
+                                                    <!-- 按钮权限-->
+                                                    <div class="form-group">
+                                                        <label for="a_btnTitle" class="control-label">页面按钮权限名称：</label>
+                                                        <input type="text" placeholder="如:用户新增" class="form-control" name="title" id="a_btnTitle">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label  class="control-label">页面按钮权限值：</label>
+                                                        <input type="text" placeholder="如:user:add" class="form-control" name="name" id="a_name">
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                    <button type="button" data-method='saveBtnPermisison' class="btn btn-primary">保存</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 新增按钮权限的对话框 end-->
+
+
+
+                                <!-- 修改按钮权限的对话框 start-->
+                                <div class="modal fade" id="EditBtnPermissionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" >修改页面按钮权限</h4>
+                                            </div>
+                                            <form id="editBtnPermissionForm" method="post" enctype="multipart/form-data">
+                                                <div class="modal-body">
+
+                                                    <!-- 按钮权限-->
+                                                    <div class="form-group">
+                                                        <!-- 页面权限id-->
+                                                        <input type="hidden" class="form-control" name="id" id="e_id">
+                                                        <label for="a_btnTitle" class="control-label">页面按钮权限名称：</label>
+                                                        <input type="text"  class="form-control" name="title" id="e_btnTitle">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label  class="control-label">页面按钮权限值：</label>
+                                                        <input type="text"  class="form-control" name="name" id="e_name">
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                    <button type="button" data-method='editSaveBtnPermisison' class="btn btn-primary">保存</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 修改按钮权限的对话框 end-->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+</div>
+
+<div th:include="~{views/common/include :: #jsStyle}"></div>
+<script type="text/javascript"  th:src="@{/static/js/jquery.serialize-object.min.js}"></script>
+<script type="text/javascript"  th:src="@{/static/js/plugins/bootstrap-table-treegrid/bootstrap-table-treegrid.js}"></script>
+<script type="text/javascript"  th:src="@{/static/js/plugins/bootstrap-table-treegrid/jquery.treegrid.min.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    var permissions =   [[${permissions}]];
+    var $table = $('#menuTable');
+    // '[{"id":1,"pid":0,"name":"用户管理",url:'',icon:'',"permission":{}},' +
+    $(function() {
+        //加载树形表格
+        $table.bootstrapTable({
+            data:permissions,
+            idField: 'id',
+            dataType:'jsonp',
+            columns: [
+                { field: 'check',  checkbox: true, formatter: function (value, row, index) {
+                        if (row.check == true) {
+                            // console.log(row.serverName);
+                            //设置选中
+                            return {  checked: true };
+                        }
+                    }
+                },
+                { field: 'title',  title: '权限名称' },
+                { field: 'name',  title: '权限值' },
+                {field: 'pid', title: '所属上级编号',formatter:'pidFormatter'},
+                {field: 'menu', title: '所属菜单',formatter:'menuFormatter'},
+                { field: 'operate', title: '操作', align: 'center', events : operateEvents, formatter: 'operateFormatter' },
+            ],
+
+            // bootstrap-table-treegrid.js 插件配置 -- start
+
+            //在哪一列展开树形
+            treeShowField: 'title',
+            //指定父id列
+            parentIdField: 'pid',
+
+            onResetView: function(data) {
+                //console.log('load');
+                $table.treegrid({
+                    initialState: 'collapsed',// 所有节点都折叠
+                    // initialState: 'expanded',// 所有节点都展开，默认展开
+                    treeColumn: 1,
+                    expanderExpandedClass: 'mdi mdi-minus',  //图标样式
+                    expanderCollapsedClass: 'mdi mdi-plus',
+                    onChange: function() {
+                        $table.bootstrapTable('resetWidth');
+                    }
+                });
+
+                //只展开树形的第一级节点
+                $table.treegrid('getRootNodes').treegrid('expand');
+
+            },
+            onCheck:function(row){
+                var datas = $table.bootstrapTable('getData');
+                // 勾选子类
+                selectChilds(datas,row,"id","pid",true);
+
+                // 勾选父类
+                selectParentChecked(datas,row,"id","pid")
+
+                // 刷新数据
+                $table.bootstrapTable('load', datas);
+            },
+
+            onUncheck:function(row){
+                var datas = $table.bootstrapTable('getData');
+                selectChilds(datas,row,"id","pid",false);
+                $table.bootstrapTable('load', datas);
+            },
+            // bootstrap-table-treetreegrid.js 插件配置 -- end
+        });
+    });
+
+    $(function(){
+        //绑定事件
+        $("button,a").on('click',function(){
+            //获取到 a标签里面配置 data-method
+            var methodName = $(this).data('method');
+            if(methodName){
+                doMethod[methodName]();
+            }
+        });
+        var doMethod={
+            saveBtnPermisison:function(){
+                //新增页面按钮权限功能
+                let btnPObj = $("#addBtnPermissionForm").serializeObject()
+                var sendObj = {
+                    name:btnPObj.name,
+                    pid:btnPObj.pid,
+                    title:btnPObj.title
+                }
+                $.ajax({
+                    type:"POST",
+                    url:"/permission/addBtnPermission",
+                    dataType:'json',
+                    data:JSON.stringify(sendObj),
+                    contentType:'application/json;charset=utf-8',
+                    success:function(data){
+                        if(data.isSuccess){
+                            $.confirm({
+                                title:'温馨提示',
+                                content:'保存成功',
+                                type:'green',
+                                buttons:{
+                                    omg:{
+                                        text:'谢谢',
+                                        btnClass:'btn-green',
+                                        action:function(){
+                                            $('#AddBtnPermissionModal').modal('hide')
+                                            location.href='/permission/index'
+                                        }
+                                    }
+                                }
+                            })
+                        }else{
+                            $.alert({
+                                title:'温馨提示',
+                                content:'修改失败'+data.message,
+                                type:'red',
+                            })
+
+                        }
+                    }
+                })
+
+            },
+            editSaveBtnPermisison:function(){
+
+                //修改页面按钮权限功能
+                let btnPObj = $("#editBtnPermissionForm").serializeObject()
+                var sendObj = {
+                    name:btnPObj.name,
+                    id:btnPObj.id,
+                    title:btnPObj.title
+                }
+                $.ajax({
+                    type:"POST",
+                    url:"/permission/editBtnPermission",
+                    dataType:'json',
+                    data:JSON.stringify(sendObj),
+                    contentType:'application/json;charset=utf-8',
+                    success:function(data){
+                        if(data.isSuccess){
+                            $.confirm({
+                                title:'温馨提示',
+                                content:'保存成功',
+                                type:'green',
+                                buttons:{
+                                    omg:{
+                                        text:'谢谢',
+                                        btnClass:'btn-green',
+                                        action:function(){
+                                            $('#EditBtnPermissionModal').modal('hide')
+                                            location.href='/permission/index'
+                                        }
+                                    }
+                                }
+                            })
+                        }else{
+                            $.alert({
+                                title:'温馨提示',
+                                content:'修改失败'+data.message,
+                                type:'red',
+                            })
+
+                        }
+                    }
+                })
+            }
+        }
+    })
+
+    // 格式化按钮
+    function operateFormatter(value, row, index) {
+        return [
+            '<button type="button"  class="addBtnPermisison btn-small  btn-primary" style="margin-right:15px;"><i class="fa fa-plus" ></i>&nbsp;新增</button>',
+            '<button type="button"  class="editBtnPermisison btn-small   btn-pink" style="margin-right:15px;"><i class="fa fa-pencil-square-o" ></i>&nbsp;修改</button>',
+            '<button type="button" class="deleteBtnPermisison btn-small   btn-danger" style="margin-right:15px;"><i class="fa fa-trash-o" ></i>&nbsp;删除</button>'
+        ].join('');
+
+    }
+    // 格式化类型
+    function typeFormatter(value, row, index) {
+        if (value === 'menu') {  return '菜单';  }
+        if (value === 'button') {  return '按钮'; }
+        if (value === 'api') {  return '接口'; }
+        return '-';
+    }
+    //pidFormatter
+    function pidFormatter(value, row, index) {
+
+        return value?value:'没有上级';
+    }
+
+    //menuFormatter {name:'xxx',url:'xxx'}
+    function menuFormatter(value, row, index) {
+        return row.menu?row.menu.name:'';
+    }
+    // 格式化权限值
+    function permissionFormatter(value, row, index) {
+        var permission = value;
+        if (permission) {
+            return  permission.name;
+        }
+    }
+
+    //初始化操作按钮的方法
+    window.operateEvents = {
+        'click .addBtnPermisison': function (e, value, row, index) {
+            add(row);
+        },
+        'click .deleteBtnPermisison': function (e, value, row, index) {
+            del(row);
+        },
+        'click .editBtnPermisison': function (e, value, row, index) {
+            update(row);
+        }
+    };
+</script>
+<script>
+    /**
+     * 选中父项时，同时选中子项
+     * @param datas 所有的数据
+     * @param row 当前数据
+     * @param id id 字段名
+     * @param pid 父id字段名
+     */
+    function selectChilds(datas,row,id,pid,checked) {
+        for(var i in datas){
+            if(datas[i][pid] == row[id]){
+                datas[i].check=checked;
+                selectChilds(datas,datas[i],id,pid,checked);
+            };
+        }
+    }
+
+    function selectParentChecked(datas,row,id,pid){
+        for(var i in datas){
+            if(datas[i][id] == row[pid]){
+                datas[i].check=true;
+                selectParentChecked(datas,datas[i],id,pid);
+            };
+        }
+    }
+
+
+    function add(row) {
+        if(row.pid){
+            //子菜单(二级菜单)
+            $.confirm({
+                title:'温馨提示',
+                content:'权限只支持菜单页面按钮权限',
+                type:'red',
+                buttons:{
+                    close:{
+                        text:'谢谢'
+                    }
+                }
+            })
+            return
+        }
+        //弹出权限设置
+
+        $("#AddBtnPermissionModal").modal({show:true});
+        $("#a_pid").val(row.id)
+        $("#a_ptitle").val(row.title) //回显数据使用 不用存储数据库
+        $("#a_btnTitle").val('')
+        $("#a_name").val('')
+
+
+    }
+    function del(row) {
+        if(!row.pid){
+            //一级权限根据菜单自动生成，不需要需求
+            $.confirm({
+                title:'温馨提示',
+                content:'菜单页面权限不能删除',
+                type:'red',
+                buttons:{
+                    close:{
+                        text:'谢谢'
+                    }
+                }
+            })
+            return
+        }
+
+        //发送ajax删除数据
+
+        //删除之前提示用户是否要删除数据
+        $.confirm({
+            title:'温馨提示',
+            content:'亲 你确定要删除我吗？',
+            type:'green',
+            buttons:{
+                ok:{
+                    text:'确定',
+                    btnClass:'btn-green',
+                    action:function(){
+                        $.ajax({
+                            type:'POST',
+                            url:'/permission/deleteBtnPermission',
+                            data:{"id":row.id},
+                            success:function(data){
+                                if(data.isSuccess){
+                                    $.alert({
+                                        title:'温馨提示',
+                                        content:'删除成功',
+                                        type:'green',
+                                    })
+                                    location.href='/permission/index'
+                                }else{
+                                    $.alert({
+                                        title:'温馨提示',
+                                        content:'删除失败'+data.message,
+                                        type:'red',
+                                    })
+                                }
+                            }
+                        })
+                    }
+                },
+                cancel:{
+                    text:'取消',
+                    btnClass:'btn-red'
+                }
+            }
+        })
+
+    }
+    function update(row) {
+        if(!row.pid){
+            //一级权限根据菜单自动生成，不需要需求
+            $.confirm({
+                title:'温馨提示',
+                content:'菜单权限不能修改',
+                type:'red',
+                buttons:{
+                    close:{
+                        text:'谢谢'
+                    }
+                }
+            })
+            return
+        }
+
+
+        $("#EditBtnPermissionModal").modal({show:true});
+        $("#e_id").val(row.id)
+        $("#e_name").val(row.name)
+        $("#e_btnTitle").val(row.title)
+
+    }
+
+
+</script>
+
+<style>
+    .md-header{
+        margin-left: 0px;
+    }
+    .my-container {
+        float: left;
+        display: inline-block;
+        margin-right:30px;
+    }
+
+    .myLabel-content ,.myText-content,.myBtn-content{
+        float: left;
+        display: inline-block;
+        line-height: 40px;
+        margin-left: 10px;
+    }
+    .myLabel-content,.myText-content input[type='text'],.myBtn-content .btn {
+        height: 38px;
+        font-size: 15px;
+    }
+    .myBtn-content .btn {
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+
+</style>
+
+
+
+
+</body>
+</html>
